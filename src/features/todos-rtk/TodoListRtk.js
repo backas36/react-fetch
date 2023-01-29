@@ -1,40 +1,28 @@
 import { useState } from 'react';
 
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import {
+  useAddTodoMutation, useDelTodoMutation, useGetTodosQuery,
+  useUpdateTodoMutation,
+} from '../api/apiSlice';
 
-import { addTodo, delTodo, getTodos, updateTodo } from '../../api/todosApi';
-
-const TodoList = () => {
+const TodoListRtk = () => {
   const [newTodo, setNewTodo] = useState("");
-  const queryClient = useQueryClient();
+  console.count("render");
+
   const {
+    data: todos,
     isLoading,
+    isSuccess,
     isError,
     error,
-    data: todos,
-  } = useQuery("todos", getTodos, {
-    select: (data) => data.sort((a, b) => b.id - a.id),
-  });
-
-  const addTodoMutation = useMutation(addTodo, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("todos");
-    },
-  });
-  const updateTodoMutation = useMutation(updateTodo, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("todos");
-    },
-  });
-  const delTodoMutation = useMutation(delTodo, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("todos");
-    },
-  });
+  } = useGetTodosQuery();
+  const [addTodo] = useAddTodoMutation();
+  const [updateTodo] = useUpdateTodoMutation();
+  const [delTodo] = useDelTodoMutation();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addTodoMutation.mutate({ userId: 1, title: newTodo, completed: false });
+    addTodo({ userId: 1, title: newTodo, completed: false });
     setNewTodo("");
   };
 
@@ -58,9 +46,9 @@ const TodoList = () => {
 
   let content;
   if (isLoading) {
-    content = <p>Loading...</p>;
+    content = <p>Loading</p>;
   } else if (isError) {
-    content = <p>{error.message}</p>;
+    content = <p>{error}</p>;
   } else {
     content = todos.map((todo) => {
       return (
@@ -71,18 +59,12 @@ const TodoList = () => {
               checked={todo.completed}
               id={todo.id}
               onChange={() =>
-                updateTodoMutation.mutate({
-                  ...todo,
-                  completed: !todo.completed,
-                })
+                updateTodo({ ...todo, completed: !todo.completed })
               }
             />
             <label htmlFor={todo.id}>{todo.title}</label>
           </div>
-          <button
-            className="trash"
-            onClick={() => delTodoMutation.mutate({ id: todo.id })}
-          >
+          <button className="trash" onClick={() => delTodo({ id: todo.id })}>
             <i className="fa-solid fa-trash"></i>
           </button>
         </article>
@@ -91,10 +73,10 @@ const TodoList = () => {
   }
   return (
     <main>
-      <h1>Todo List</h1>
+      <h2>Todo List - RTK Query</h2>
       {newItemSection}
       {content}
     </main>
   );
 };
-export default TodoList;
+export default TodoListRtk;
