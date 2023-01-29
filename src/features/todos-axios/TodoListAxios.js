@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 
 import { addTodo, delTodo, getTodos, updateTodo } from '../../lib/api/todos';
+import TodoListAxios2 from './TodoListAxios2';
 
 const TodoListAxios = () => {
   const [newTodo, setNewTodo] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [todos, setTodos] = useState([]);
-  console.count("render");
   const handleUpdateTodo = async (todo) => {
     try {
       await updateTodo(todo);
@@ -25,6 +25,7 @@ const TodoListAxios = () => {
       setError(err.message);
     }
   };
+
   const fetchTodos = async () => {
     setIsLoading(true);
     try {
@@ -38,6 +39,7 @@ const TodoListAxios = () => {
   };
 
   useEffect(() => {
+    console.log("mounted");
     fetchTodos();
   }, []);
 
@@ -109,6 +111,7 @@ const TodoListAxios = () => {
       <h2>Todo List - Axios</h2>
       {newItemSection}
       {content}
+      <TodoListAxios2 />
     </main>
   );
 };

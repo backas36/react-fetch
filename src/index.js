@@ -13,12 +13,12 @@ import { apiSlice } from './features/api/apiSlice';
 const queryClient = new QueryClient();
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <ApiProvider api={apiSlice}>
-        <App />
-      </ApiProvider>
-      <ReactQueryDevtools initialIsOpen />
-    </QueryClientProvider>
-  </React.StrictMode>
+  //<React.StrictMode>
+  <QueryClientProvider client={queryClient}>
+    <ApiProvider api={apiSlice}>
+      <App />
+    </ApiProvider>
+    <ReactQueryDevtools initialIsOpen />
+  </QueryClientProvider>
+  //</React.StrictMode>
 );

@@ -1,13 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { addTodo, delTodo, getTodos, updateTodo } from '../../lib/api/todos';
+import Todos from './TodoListReactQuery2';
 
-const TodoList = () => {
+const TodoListReactQuery = () => {
   const [newTodo, setNewTodo] = useState("");
   const queryClient = useQueryClient();
-  console.count("render");
 
   const {
     isLoading,
@@ -17,6 +17,10 @@ const TodoList = () => {
   } = useQuery("todos", getTodos, {
     select: (data) => data.sort((a, b) => b.id - a.id),
   });
+
+  useEffect(() => {
+    console.log("mounted");
+  }, []);
 
   const addTodoMutation = useMutation(addTodo, {
     onSuccess: () => {
@@ -96,7 +100,8 @@ const TodoList = () => {
       <h2>Todo List - React Query with axios</h2>
       {newItemSection}
       {content}
+      <Todos />
     </main>
   );
 };
-export default TodoList;
+export default TodoListReactQuery;

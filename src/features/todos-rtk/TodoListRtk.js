@@ -1,13 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   useAddTodoMutation, useDelTodoMutation, useGetTodosQuery,
   useUpdateTodoMutation,
 } from '../api/apiSlice';
+import TodoListReactQuery2 from '../todos-react-query/TodoListReactQuery2';
 
 const TodoListRtk = () => {
   const [newTodo, setNewTodo] = useState("");
-  console.count("render");
 
   const {
     data: todos,
@@ -19,7 +19,9 @@ const TodoListRtk = () => {
   const [addTodo] = useAddTodoMutation();
   const [updateTodo] = useUpdateTodoMutation();
   const [delTodo] = useDelTodoMutation();
-
+  useEffect(() => {
+    console.log("mounted");
+  }, []);
   const handleSubmit = (e) => {
     e.preventDefault();
     addTodo({ userId: 1, title: newTodo, completed: false });
@@ -76,6 +78,7 @@ const TodoListRtk = () => {
       <h2>Todo List - RTK Query</h2>
       {newItemSection}
       {content}
+      <TodoListReactQuery2 />
     </main>
   );
 };

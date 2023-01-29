@@ -1167,26 +1167,8 @@
     {
       "userId": 1,
       "title": "123",
-      "completed": false,
-      "id": 208
-    },
-    {
-      "userId": 1,
-      "title": "3",
-      "completed": false,
-      "id": 209
-    },
-    {
-      "userId": 1,
-      "title": "2",
-      "completed": false,
-      "id": 210
-    },
-    {
-      "userId": 1,
-      "title": "1",
       "completed": true,
-      "id": 211
+      "id": 208
     }
   ]
 }
